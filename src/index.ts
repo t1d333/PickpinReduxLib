@@ -1,7 +1,7 @@
 export type Action = {
   type: string;
   payload?: { [_: string]: any };
-}
+};
 
 export type Reducer<State> = (state: State, action: Action) => State;
 
@@ -9,13 +9,11 @@ export class Store<State> {
   private state: State;
   private reducer: Reducer<State>;
 
-  private subscibers: Function[];
-  constructor(reducer: Reducer<State>, initialState?: State) {
+  private subscribers: Function[];
+  constructor(reducer: Reducer<State>, initialState: State) {
     this.reducer = reducer;
-    this.subscibers = [];
-    if (initialState) {
-      this.state = initialState;
-    }
+    this.subscribers = [];
+    this.state = initialState;
   }
 
   public getState = (): State => {
@@ -24,15 +22,15 @@ export class Store<State> {
 
   public dispatch = (action: Action) => {
     this.state = this.reducer(this.state, action);
-    for (const sub of this.subscibers) {
+    for (const sub of this.subscribers) {
       sub();
     }
   };
 
   public subscibe = (callback: Function) => {
-    this.subscibers.push(callback);
+    this.subscribers.push(callback);
     return () => {
-      this.subscibers = this.subscibers.filter((sub) => sub !== callback);
+      this.subscribers = this.subscribers.filter((sub) => sub !== callback);
     };
   };
 }
