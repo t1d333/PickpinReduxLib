@@ -27,7 +27,7 @@ export class Store<State> {
     }
   };
 
-  public subscibe = (callback: Function) => {
+  public subscribe = (callback: Function) => {
     this.subscribers.push(callback);
     return () => {
       this.subscribers = this.subscribers.filter((sub) => sub !== callback);
